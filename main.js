@@ -192,7 +192,7 @@ const lineGeometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3
 const lineMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
 const line = new THREE.Line(lineGeometry, lineMaterial);
 line.name = 'line';
-line.scale.z = 5; // Longitud del rayo
+line.scale.z = 20; // Longitud del rayo
 controller.add(line);
 
 //Funciones para que la información salga 
