@@ -3,11 +3,8 @@ import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 const renderer = new THREE.WebGLRenderer();
-const controls = new OrbitControls(camera, renderer.domElement);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.xr.enabled = true;
@@ -16,11 +13,18 @@ renderer.xr.setReferenceSpaceType( 'local' );
 document.body.appendChild(renderer.domElement);
 
 document.body.appendChild( VRButton.createButton( renderer ) );
+const scene = new THREE.Scene();
 
+//CAMARA
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const controls = new OrbitControls(camera, renderer.domElement);
+camera.position.set(-10, 2, 30)
+controls.target.set(-1,2,0);
+controls.update()
+
+//Luces
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight);
-
-
 
 const pointLight1 = new THREE.PointLight(0xffffff, 0.4);
 
@@ -40,8 +44,6 @@ pointLight3.position.set(-20, 30, 10);
 pointLight3.castShadow = true;
 scene.add(pointLight3);
 
-
-
 const pointLight5 = new THREE.PointLight(0xffffff, 0.8);
 
 pointLight5.position.set(0, 1, 40);
@@ -54,8 +56,7 @@ pointLight6.position.set(0, 1, -40);
 pointLight6.castShadow = true;
 scene.add(pointLight6);
 
-
-
+//ESCENARIO
 const textureLoader = new THREE.TextureLoader();
 
 // Piso
@@ -78,6 +79,7 @@ const material1 = new THREE.MeshPhongMaterial({
     displacementScale: 0
 });
 
+////////////////////////PINTURAS
 function createPaint(tamx,posx, posz, rotationY, texturePath) {
     const geometry = new THREE.BoxGeometry(tamx, 5.2, 0.1); 
     const material = new THREE.MeshBasicMaterial({
@@ -162,13 +164,6 @@ function loadFBXModel(url, scale, position, rotation, materialMap) {
         scene.add(object); 
     });
 }
-
-/*const OCC = textureLoader.load('Plaster_Rough_001_SD-20241114T013057Z-001/Plaster_Rough_001_SD/Plaster_Rough_001_OCC.jpg');
-const COLOR = textureLoader.load('Plaster_Rough_001_SD-20241114T013057Z-001/Plaster_Rough_001_SD/Plaster_Rough_001_COLOR.jpg');
-const DISP = textureLoader.load('Plaster_Rough_001_SD-20241114T013057Z-001/Plaster_Rough_001_SD/Plaster_Rough_001_DISP.png');
-const NORM = textureLoader.load('Plaster_Rough_001_SD-20241114T013057Z-001/Plaster_Rough_001_SD/Plaster_Rough_001_NORM.jpg');
-const ROUGHT = textureLoader.load('Plaster_Rough_001_SD-20241114T013057Z-001/Plaster_Rough_001_SD/Plaster_Rough_001_ROUGH.jpg');*/
-
 const materialS = {
 
 };
@@ -177,9 +172,6 @@ const materialS = {
 loadFBXModel('Museo.fbx', { x:1 , y: 1, z: 1 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, materialS);
 
 
-camera.position.z = 30;
-camera.position.y = 2;
-camera.position.x = -10;
 
 function animate() {
 
@@ -189,3 +181,27 @@ function animate() {
 }
 
 renderer.setAnimationLoop(animate);
+
+//Funciones para que la información salga 
+//1er checkpoint, que el raycat funcione:
+const raycaster = new THREE.Raycaster();
+
+document.addEventListener('mousedown', onMouseDown);
+
+function onMouseDown(event){
+    const coords = new THREE.Vector2(
+        ( event.clientX / window.innerWidth ) * 2 - 1, 
+        - ( event.clientY / window.innerHeight ) * 2 + 1, 
+    )
+    raycaster.setFromCamera(coords, camera)
+
+    const interseccion = raycaster.intersectObjects(scene.children, true);
+    if (interseccion.length > 0){
+        const selectObject = interseccion[0].object;
+        const color = new THREE.Color(Math.random(), Math.random(), Math.random())
+        selectObject.material.color = color;
+        console.log(`${selectObject.name} was clicked!`);
+    }
+}
+//2do check, que cambie de color los cuadros
+
