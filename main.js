@@ -199,28 +199,22 @@ controller.add(line);
 const raycaster = new THREE.Raycaster();
 const tempMatrix = new THREE.Matrix4();
 
+// Evento de selección
 controller.addEventListener('selectstart', () => {
-    // Extraer rotación y posición del controlador
+    // Usar la posición y orientación del controlador
     tempMatrix.identity().extractRotation(controller.matrixWorld);
     raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
-    // Detectar intersecciones
-    const intersects = raycaster.intersectObjects(scene.children, true); // Asegúrate de usar 'true' para buscar en jerarquías
+    // Detectar intersecciones con objetos de la escena
+    const intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
         const selectedObject = intersects[0].object;
-
-        // Cambiar el color del objeto seleccionado
-            const color = new THREE.Color(Math.random(), Math.random(), Math.random());
-            selectedObject.material.color = color;
-        
-        console.log(`${selectedObject.name || "Objeto sin nombre"} fue seleccionado en VR!`);
-    } else {
-        console.log('Nada fue seleccionado.');
+        const color = new THREE.Color(Math.random(), Math.random(), Math.random());
+        selectedObject.material.color = color; // Cambiar el color del objeto seleccionado
+        console.log('${selectedObject.name || "Objeto sin nombre"} fue seleccionado en VR!');
     }
 });
-
-
 
 
 document.addEventListener('mousedown', onMouseDown);
@@ -237,7 +231,6 @@ function onMouseDown(event){
         const selectObject = interseccion[0].object;
         const color = new THREE.Color(Math.random(), Math.random(), Math.random())
         selectObject.material.color = color;
-        console.log(`${selectObject.name} was clicked!`);
+        console.log('${selectObject.name} was clicked!');
     }
 }
-
