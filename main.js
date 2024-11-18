@@ -192,7 +192,7 @@ const lineGeometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3
 const lineMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
 const line = new THREE.Line(lineGeometry, lineMaterial);
 line.name = 'line';
-line.scale.z = 5; // Longitud del rayo
+line.scale.z = 20; // Longitud del rayo
 controller.add(line);
 
 //Funciones para que la información salga 
@@ -212,7 +212,7 @@ controller.addEventListener('selectstart', () => {
         const selectedObject = intersects[0].object;
         const color = new THREE.Color(Math.random(), Math.random(), Math.random());
         selectedObject.material.color = color; // Cambiar el color del objeto seleccionado
-        console.log('${selectedObject.name || "Objeto sin nombre"} fue seleccionado en VR!');
+        console.log(`${selectedObject.name || "Objeto sin nombre"} fue seleccionado en VR!`);
     }
 });
 
@@ -231,6 +231,6 @@ function onMouseDown(event){
         const selectObject = interseccion[0].object;
         const color = new THREE.Color(Math.random(), Math.random(), Math.random())
         selectObject.material.color = color;
-        console.log('${selectObject.name} was clicked!');
+        console.log(`${selectObject.name} was clicked!`);
     }
 }
