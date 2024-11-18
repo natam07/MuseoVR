@@ -231,7 +231,9 @@ function onMouseDown(event) {
     if (interseccion.length > 0) {
         const selectObject = interseccion[0].object;
         if (selectObject.name.includes('Pintura')) {
-            alert(`¡Has seleccionado: ${selectObject.name}!`);
+            const color = new THREE.Color(Math.random(), Math.random(), Math.random())
+            selectObject.material.color = color;
+            console.log(`${selectObject.name} was clicked!`);
         }
     }
 }
