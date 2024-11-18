@@ -211,10 +211,9 @@ controller.addEventListener('selectstart', () => {
         const selectedObject = intersects[0].object;
 
         // Cambiar el color del objeto seleccionado
-        if (selectedObject.material) {
             const color = new THREE.Color(Math.random(), Math.random(), Math.random());
             selectedObject.material.color = color;
-        }
+        
         console.log(`${selectedObject.name || "Objeto sin nombre"} fue seleccionado en VR!`);
     } else {
         console.log('Nada fue seleccionado.');
