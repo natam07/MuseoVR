@@ -206,7 +206,7 @@ controller.addEventListener('selectstart', () => {
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
     // Detectar intersecciones con objetos de la escena
-    const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(scene.children, true);
     if (intersects.length > 0) {
         const selectedObject = intersects[0].object;
         if (selectedObject.name.includes('Pintura')) {
