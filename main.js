@@ -199,47 +199,6 @@ controller.add(line);
 const raycaster = new THREE.Raycaster();
 const tempMatrix = new THREE.Matrix4();
 
-function showNotification(message) {
-    // Crear el lienzo para dibujar el texto
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = 256;
-    canvas.height = 128;
-
-    // Dibujar fondo y texto
-    context.fillStyle = 'rgba(0, 0, 0, 0.8)'; // Fondo negro semitransparente
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = 'white'; // Color del texto
-    context.font = '24px Arial';
-    context.textAlign = 'center';
-    context.fillText(message, canvas.width / 2, canvas.height / 2);
-
-    // Crear una textura con el lienzo
-    const texture = new THREE.CanvasTexture(canvas);
-
-    // Crear un Sprite para el aviso
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-    const sprite = new THREE.Sprite(spriteMaterial);
-
-    // Escalar y posicionar el Sprite
-    sprite.scale.set(10, 5, 1); // Ajustar tamaño
-    sprite.position.set(
-        camera.position.x,
-        camera.position.y,
-        camera.position.z - 5
-    );
-
-    // Agregar el Sprite a la escena
-    scene.add(sprite);
-
-    // Eliminar el Sprite después de 3 segundos
-    setTimeout(() => {
-        scene.remove(sprite);
-        texture.dispose();
-        spriteMaterial.dispose();
-    }, 3000);
-}
-
 controller.addEventListener('selectstart', () => {
     // Usar la posición y orientación del controlador
     tempMatrix.identity().extractRotation(controller.matrixWorld);
@@ -251,7 +210,8 @@ controller.addEventListener('selectstart', () => {
     if (intersects.length > 0) {
         const selectedObject = intersects[0].object;
         if (selectedObject.name.includes('Pintura')) {
-            showNotification(`¡Seleccionaste: ${selectedObject.name}!`);
+            const color = new THREE.Color(Math.random(), Math.random(), Math.random());
+            selectedObject.material.color = color;
             console.log(`${selectedObject.name || "Objeto sin nombre"} fue seleccionado en VR!`);
         }
     }
