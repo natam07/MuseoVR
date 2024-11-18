@@ -206,12 +206,12 @@ controller.addEventListener('selectstart', () => {
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
     // Detectar intersecciones con objetos de la escena
-    const intersects = raycaster.intersectObjects(scene.children);
-    if (intersects.length > 0) {
-        const selectedObject = intersects[0].object;
+    const interseccion = raycaster.intersectObjects(scene.children);
+    if (interseccion.length > 0) {
+        const selectObject = interseccion[0].object;
         const color = new THREE.Color(Math.random(), Math.random(), Math.random());
-        selectedObject.material.color = color; // Cambiar el color del objeto seleccionado
-        console.log(`${selectedObject.name || "Objeto sin nombre"} fue seleccionado en VR!`);
+        selectObject.material.color = color; // Cambiar el color del objeto seleccionado
+        console.log(`${selectObject.name || "Objeto sin nombre"} fue seleccionado en VR!`);
     }
 });
 
